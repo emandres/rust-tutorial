@@ -52,6 +52,8 @@ mod tests {
 
 ## Chapter 2 - Option\<T\>
 
+Option is a type-safe way around null references, which are almost completely absent from Rust (they do exist in unsafe Rust, but play a niche role).
+
 In `src/lib.rs`:
 
 ```rust
@@ -108,6 +110,15 @@ struct Option<T> {
 ```
 
 ## Chapter 3 - Results 
+
+The Result type partially replaces the exception throw pattern available in many languages.
+Instead of stopping execution and bubbling up to the nearest `catch`, Rust has a built in type 
+that for expressing the failure of an operation. There are also some language features that make working with
+results a bit more ergonomic.
+
+The `Result` type is an implementation of the `Either` monad. It has two possible states: `Ok(T)` or `Err(E)`.
+It is very common in Rust code to see Result aliased to remove the need to type the error type `E` everywhere it is used. 
+For instance in the following examples, anywhere that `Result<Value>` is used, it actually resolves to `Result<Value, serde_json::Error>`.
 
 In `Cargo.toml`
 
@@ -171,6 +182,8 @@ mod tests {
 
 ## Chapter 4 - (Im)mutability
 
+Values in Rust are immutable by default. The compiler will only allow mutation if a `let` binding contains the `mut` keyword.
+
 ```rust
 pub fn does_not_compile() -> i32 {
     let x = 42;
@@ -208,12 +221,12 @@ fn smart_pointers() {
 ```
 
 Rust follows the C++ paradigm of RAII (Resource allocation is initialization). 
-The owning scope of a datum will automatically deallocate an object when the scope ends.
+The owning scope of data will automatically deallocate it when the scope ends.
 To customize this behavior, the `Drop` trait may be implemented.
 
 ## Chapter 6 - Ownership and Borrowing
 
-In order to share a datum without transfering ownership we can use references.
+In order to share data without transfering ownership we can use references.
 Normal references (denoted `&x`) are immutable, i.e. they're a readonly view into the state of the object.
 
 ```rust
